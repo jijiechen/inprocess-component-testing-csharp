@@ -1,5 +1,8 @@
+using Microsoft.AspNetCore.Mvc;
+
 namespace ComponentTesting.Inprocess
 {
+    [Controller]
     public class HelloWorldController
     {
         private readonly HelloWorldService _helloWorldService;
@@ -11,6 +14,7 @@ namespace ComponentTesting.Inprocess
         
         
 
+        [Route("")]
         public string Index()
         {
             return _helloWorldService.SayHello();

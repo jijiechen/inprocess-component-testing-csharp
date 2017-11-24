@@ -1,20 +1,32 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+
 
 namespace ComponentTesting.Inprocess.App
 {
-    public class ApplicationContext
+    public static class ApplicationContext
     {
-        public static ServiceProvider BuildServiceProvider(Action<ServiceCollection> setupServiceProvider = null)
+        public static void ConfigigureWebHost()
         {
-            var services = new ServiceCollection();
-            
+            var host = new WebHostBuilder()
+                .UseKestrel()
+                .ConfigureServices(ConfigureServices)
+                .Configure(app =>
+                {
+                    app.UseMvc();
+                })
+                .Build();
+
+            host.Run();
+        }
+
+
+        public static void ConfigureServices(IServiceCollection services)
+        {
+            services.AddMvcCore();
             services.AddSingleton<HelloWorldService>();
             services.AddTransient<HelloWorldController>();
-            setupServiceProvider?.Invoke(services);
-
-            return services.BuildServiceProvider();
         }
-        
     }
 }
