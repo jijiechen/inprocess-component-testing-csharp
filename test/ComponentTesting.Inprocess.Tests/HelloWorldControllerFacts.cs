@@ -36,5 +36,6 @@ namespace ComponentTesting.Inprocess.Tests
             
             Assert.Equal("Hello from mocked service.", indexString);
         }
+
     }
 }

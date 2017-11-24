@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -7,22 +8,28 @@ namespace ComponentTesting.Inprocess.App
 {
     public static class ApplicationContext
     {
-        public static void ConfigigureWebHost()
+        internal static void ConfigigureWebHost()
         {
-            var host = new WebHostBuilder()
+            var host = CreateWebHost()
                 .UseKestrel()
-                .ConfigureServices(ConfigureServices)
-                .Configure(app =>
-                {
-                    app.UseMvc();
-                })
                 .Build();
 
             host.Run();
         }
 
+        public static IWebHostBuilder CreateWebHost(Action<IServiceCollection> serviceConfiguration = null)
+        {
+            var hostBuilder = new WebHostBuilder()
+                .ConfigureServices(services =>
+                {
+                    ConfigureAppServices(services);
+                    serviceConfiguration?.Invoke(services);
+                })
+                .Configure(app => { app.UseMvc(); });
+            return hostBuilder;
+        }
 
-        public static void ConfigureServices(IServiceCollection services)
+        public static void ConfigureAppServices(IServiceCollection services)
         {
             services.AddMvcCore();
             services.AddSingleton<HelloWorldService>();
