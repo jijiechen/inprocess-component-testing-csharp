@@ -1,5 +1,3 @@
-
-using ComponentTesting.Inprocess.Models;
 using ComponentTesting.Inprocess.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
@@ -26,7 +24,7 @@ namespace ComponentTesting.Inprocess.Tests
         public void should_be_able_to_serve_mocked_http_dependency()
         {
             var mockedHttpInvoker = new Mock<IHttpInvoker>();
-            mockedHttpInvoker.Setup(s => s.InvokeHttp(It.IsAny<string>())).Returns("{\"color\":\"olive\",\"value\":\"ab9900\"}");
+            mockedHttpInvoker.Setup(s => s.InvokeHttp(It.IsAny<string>())).Returns("{\"color\":\"olive\",\"value\":\"#ab9900\"}");
             var scope = ConfigureAppServices(services => services.AddSingleton(typeof(IHttpInvoker), mockedHttpInvoker.Object));
 
             var ctrl = scope.GetService<HttpDependencyController>();

@@ -14,6 +14,7 @@ namespace ComponentTesting.Inprocess
         }
 
 
+        [Route("color")]
         public string GetColor()
         {
             return _colorDisplayService.GetColorData();

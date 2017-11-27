@@ -17,8 +17,7 @@ namespace ComponentTesting.Inprocess.Services
             var colorResource = _httpInvoker.InvokeHttp("http://adobe.github.io/Spry/data/json/object-01.js");
             var colorData = JsonConvert.DeserializeObject<ColorData>(colorResource);
             
-            var valueString = $"#{colorData.value}";
-            return $"{colorData.color}:{valueString}";
+            return $"{colorData.color}:{colorData.value}";
         }
     }
 }
