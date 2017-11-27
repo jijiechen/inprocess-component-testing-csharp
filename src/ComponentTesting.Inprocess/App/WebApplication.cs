@@ -1,4 +1,5 @@
 ﻿using System;
+using ComponentTesting.Inprocess.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -6,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace ComponentTesting.Inprocess.App
 {
-    public static class ApplicationContext
+    public static class WebApplication
     {
         internal static void ConfigigureWebHost()
         {
@@ -34,6 +35,10 @@ namespace ComponentTesting.Inprocess.App
             services.AddMvcCore();
             services.AddSingleton<HelloWorldService>();
             services.AddTransient<HelloWorldController>();
+            
+            services.AddSingleton<IHttpInvoker, DefaultHttpInvoker>();
+            services.AddSingleton<HttpBasedColorDisplayService>();
+            services.AddTransient<HttpDependencyController>();
         }
     }
 }

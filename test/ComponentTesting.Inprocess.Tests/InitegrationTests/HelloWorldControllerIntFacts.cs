@@ -1,4 +1,5 @@
 ﻿using ComponentTesting.Inprocess.App;
+using ComponentTesting.Inprocess.Services;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
@@ -12,7 +13,7 @@ namespace ComponentTesting.Inprocess.Tests.InitegrationTests
         [Fact]
         public async void should_handle_web_request()
         {
-            var server = new TestServer(ApplicationContext.CreateWebHost());
+            var server = new TestServer(WebApplication.CreateWebHost());
             var client = server.CreateClient();
 
             var response = await client.GetAsync("/");
@@ -32,7 +33,7 @@ namespace ComponentTesting.Inprocess.Tests.InitegrationTests
                 services.AddSingleton(helloService.Object);
             }
 
-            var server = new TestServer(ApplicationContext.CreateWebHost(ConfigServices));
+            var server = new TestServer(WebApplication.CreateWebHost(ConfigServices));
             var client = server.CreateClient();
             
             var response = await client.GetAsync("/");

@@ -1,4 +1,5 @@
 
+using ComponentTesting.Inprocess.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using Xunit;

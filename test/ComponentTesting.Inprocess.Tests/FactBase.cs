@@ -9,7 +9,7 @@ namespace ComponentTesting.Inprocess.Tests
         protected static ServiceProvider ConfigureAppServices(Action<ServiceCollection> configure = null)
         {
             var services = new ServiceCollection();
-            ApplicationContext.ConfigureAppServices(services);
+            WebApplication.ConfigureAppServices(services);
             configure?.Invoke(services);
 
             var scope = services.BuildServiceProvider();

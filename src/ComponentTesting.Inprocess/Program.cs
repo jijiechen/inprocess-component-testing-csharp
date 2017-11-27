@@ -6,7 +6,7 @@ namespace ComponentTesting.Inprocess
     {
         public static void Main()
         {
-            ApplicationContext.ConfigigureWebHost();
+            WebApplication.ConfigigureWebHost();
         }
     }
 }

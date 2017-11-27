@@ -1,4 +1,4 @@
-﻿namespace ComponentTesting.Inprocess
+﻿namespace ComponentTesting.Inprocess.Services
 {
     public class HelloWorldService
     {

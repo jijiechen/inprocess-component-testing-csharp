@@ -1,3 +1,4 @@
+using ComponentTesting.Inprocess.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ComponentTesting.Inprocess
