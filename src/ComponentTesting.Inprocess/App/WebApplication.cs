@@ -1,7 +1,9 @@
 ﻿using System;
+using ComponentTesting.Inprocess.Data;
 using ComponentTesting.Inprocess.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 
