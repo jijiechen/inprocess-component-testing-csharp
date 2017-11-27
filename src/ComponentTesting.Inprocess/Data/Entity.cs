@@ -2,7 +2,7 @@
 
 namespace ComponentTesting.Inprocess.Data
 {
-    public class Entity
+    public abstract class Entity
     {
         [Key]
         public long Id { get; set; }

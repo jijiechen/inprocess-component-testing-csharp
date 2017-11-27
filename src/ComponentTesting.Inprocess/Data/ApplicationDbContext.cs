@@ -17,7 +17,7 @@ namespace ComponentTesting.Inprocess.Data
             entityType
                 .Assembly
                 .GetExportedTypes()
-                .Where(type => entityType.IsAssignableFrom(type))
+                .Where(type => !type.IsAbstract && !type.IsInterface && entityType.IsAssignableFrom(type))
                 .ToList()
                 .ForEach(etype => modelBuilder.Entity(etype));
         }

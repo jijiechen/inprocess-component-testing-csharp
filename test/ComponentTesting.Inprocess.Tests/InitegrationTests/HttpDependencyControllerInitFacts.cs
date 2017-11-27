@@ -27,7 +27,7 @@ namespace ComponentTesting.Inprocess.Tests.InitegrationTests
             var mockedHttpInvoker = new Mock<IHttpInvoker>();
             mockedHttpInvoker.Setup(s => s.InvokeHttp(It.IsAny<string>())).Returns("{\"color\":\"olive\",\"value\":\"#ab9900\"}");
 
-            var server = new TestServer(WebApplication.CreateWebHost(services => services.AddSingleton(typeof(IHttpInvoker), mockedHttpInvoker.Object)));
+            var server = new TestServer(WebApplication.CreateWebHost(null, services => services.AddSingleton(typeof(IHttpInvoker), mockedHttpInvoker.Object)));
             var client = server.CreateClient();
 
             var response = await client.GetAsync("/color");

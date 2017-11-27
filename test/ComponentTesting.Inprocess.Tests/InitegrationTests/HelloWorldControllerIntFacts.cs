@@ -33,7 +33,7 @@ namespace ComponentTesting.Inprocess.Tests.InitegrationTests
                 services.AddSingleton(helloService.Object);
             }
 
-            var server = new TestServer(WebApplication.CreateWebHost(ConfigServices));
+            var server = new TestServer(WebApplication.CreateWebHost(null, ConfigServices));
             var client = server.CreateClient();
             
             var response = await client.GetAsync("/");
