@@ -11,8 +11,8 @@ namespace ComponentTesting.Inprocess.Tests
     {
         [Fact]
         public void should_save_employees()
-        {
-            var databaseOptions = InitInMemorryDatabase();
+        { 
+            DatabaseUtils.CreateInMemorryDatabase(out var databaseOptions);
             
             var testEntity = new Employee(){ Name = "Jim", Id = 2};
             CreateEmployee(testEntity, databaseOptions);
@@ -23,23 +23,7 @@ namespace ComponentTesting.Inprocess.Tests
             Assert.Equal(testEntity.Name, foundEmployee.Name);
         }
 
-        private static DbContextOptions<ApplicationDbContext> InitInMemorryDatabase()
-        {
-            var connectionStringBuilder = new SqliteConnectionStringBuilder { DataSource = ":memory:" };
-            var connectionString = connectionStringBuilder.ToString();
-            var connection = new SqliteConnection(connectionString);
-
-            var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            builder.UseSqlite(connection);
-            
-            using (var context = new ApplicationDbContext(builder.Options))
-            {
-                context.Database.OpenConnection();
-                context.Database.EnsureCreated();
-            }
-
-            return builder.Options;
-        }
+        
 
         private static void CreateEmployee(Employee testEntity, DbContextOptions<ApplicationDbContext> options)
         {

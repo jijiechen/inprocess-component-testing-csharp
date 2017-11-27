@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using ComponentTesting.Inprocess.App;
 using ComponentTesting.Inprocess.Data;
 using ComponentTesting.Inprocess.Models;
@@ -29,37 +30,32 @@ namespace ComponentTesting.Inprocess.Tests.InitegrationTests
         [Fact]
         public async void should_handle_search_request_with_mocked_database()
         {
-            var connectionStringBuilder = new SqliteConnectionStringBuilder { DataSource = ":memory:" };
-            var connectionString = connectionStringBuilder.ToString();
-            var connection = new SqliteConnection(connectionString);
-
-            var builder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            builder.UseSqlite(connection);
-            
-            using (var context = new ApplicationDbContext(builder.Options))
-            {
-                context.Database.OpenConnection();
-                context.Database.EnsureCreated();
-            }
-
-            IServiceProvider appServices = null;
-            var server = new TestServer(WebApplication.CreateWebHost(services =>
-            {
-                services.AddDbContext<ApplicationDbContext>(options =>
-                {
-                    options.UseSqlite(connection);
-                });
-            }, null, app => appServices = app.ApplicationServices));
+            var sqliteConnection = DatabaseUtils.CreateInMemorryDatabase(out var databaseOptions);
+            var appServices = SetupApplication(sqliteConnection, out var client);
 
             var jim = new Employee {Id = 12, Name = "Jim"};
             appServices.GetService<IRepository<Employee>>().Save(jim);
-            
-            var client = server.CreateClient();
 
             var response = await client.GetAsync("/employees/search/im");
             var employeeString = await response.Content.ReadAsStringAsync();
             
             Assert.Equal("Jim(id=12)", employeeString);
         }
+
+        private static IServiceProvider SetupApplication(SqliteConnection sqliteConnection, out HttpClient client)
+        {
+            IServiceProvider appServices = null;
+            
+            var server = new TestServer(WebApplication.CreateWebHost(
+                services =>
+                {
+                    services.AddDbContext<ApplicationDbContext>(options => { options.UseSqlite(sqliteConnection); });
+                }, null,
+                app => appServices = app.ApplicationServices));
+            
+            client = server.CreateClient();
+            return appServices;
+        }
+
     }
 }
